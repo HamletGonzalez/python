@@ -16,33 +16,27 @@ for i in range(0,cant_productos):
     print(productos[i]['id'],'.',productos[i]['descripcion'],'RD$',productos[i]['precio'])
 
 print('si desea salir eliga el codigo cero (0)','\n')
-
-#inicializo las variables para el proceso de agregar productos al carrito
 subtotal = 0
 encontrado = False
 carrito = []
-cantidad_producto = 0
 codigo = 1
 i = 0
 
 while codigo != 0:
     encontrado = False
-    cantidad_producto = 0
     #ingresar codigo
     codigo = int(input('coloque el codigo del producto que desea: '))
     if codigo == 0:
-        print("\n",'datos de la compra:',"\n")
+        print('datos de la compra:',"\n")
+        #break 
     elif codigo in range(0,cant_productos+1):
-        while cantidad_producto <= 0:
-            descripcion = productos[codigo-1]['descripcion']
-            print('\n','que cantidad de', descripcion, ' desea?')
-            cantidad_producto = int(input(''))
-            if cantidad_producto <= 0:
-                print('La cantidad del producto tiene que ser mayor a cero','\n')
-        
+        print('que cantidad de', productos[codigo-1]['descripcion'], ' desea?')
+        cantidad_producto = abs(int(input('')))
+        if cantidad_producto == 0:
+            cantidad_producto = 1
         total_producto = productos[codigo-1]['precio'] * cantidad_producto
         subtotal = subtotal + total_producto
-            
+        
         if len(carrito) > 0:
             for i in range(0,len(carrito)):
                 if codigo == carrito[i]['codigo'] :
@@ -51,18 +45,19 @@ while codigo != 0:
                     carrito[i]['cantidad_producto']= cantidad_anterior + cantidad_producto
 
             if encontrado == False:
-                carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})
+                    carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})
 
         elif encontrado == False:
             carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})             
     else :
-            print('el codigo colocado no existe','\n')
-            
+        print('el codigo colocado no existe')
+    
+    
 #imprimiendo los datos de la compra
-print('detalle de la compra: ')
-print('ID -- DESCRIPCION -- PRECIO -- CANTIDAD -- IMPORTE')
 
 i = 0
+print('detalle de la compra: ')
+print('ID -- DESCRIPCION -- PRECIO -- CANTIDAD -- IMPORTE')
 productos_en_carrito = len(carrito)
 for i in range(0,productos_en_carrito):
     codigo_producto = carrito[i]['codigo']
@@ -76,4 +71,4 @@ for i in range(0,productos_en_carrito):
 print('\n','Totales de la compra:')
 print('Subtotal(sin itbis): ',subtotal)
 print('Impuestos: ',(subtotal*0.18)) 
-print('Total: ',subtotal+(subtotal*0.18))         
+print('Total: ',subtotal+(subtotal*0.18)) 
