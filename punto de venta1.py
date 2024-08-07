@@ -34,7 +34,6 @@ while codigo != 0:
          
     else:    
         if codigo in range(0,cant_productos+1):
-            #print('que cantidad de', productos[codigo-1]['descripcion'], ' desea?')
             while cantidad_producto <= 0:
                 descripcion = productos[codigo-1]['descripcion']
                 print('\n','que cantidad de', descripcion, ' desea?')
@@ -63,13 +62,10 @@ while codigo != 0:
             print('el codigo colocado no existe','\n')
             
 #imprimiendo los datos de la compra
-
-i = 0
-
 print('detalle de la compra: ')
 print('ID -- DESCRIPCION -- PRECIO -- CANTIDAD -- IMPORTE')
 
-
+i = 0
 productos_en_carrito = len(carrito)
 for i in range(0,productos_en_carrito):
     codigo_producto = carrito[i]['codigo']
