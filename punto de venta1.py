@@ -15,4 +15,41 @@ cant_productos = len(productos)
 for i in range(0,cant_productos):
     print(productos[i]['id'],'.',productos[i]['descripcion'],'RD$',productos[i]['precio'])
 
-#imprimiendo los productos en forma de menu
+print('si desea salir eliga el codigo cero (0)','\n')
+subtotal = 0
+encontrado = False
+carrito = []
+codigo = 1
+i = 0
+
+while codigo != 0:
+    encontrado = False
+    #ingresar codigo
+    codigo = int(input('coloque el codigo del producto que desea: '))
+    if codigo == 0:
+        print('datos de la compra:',"\n")
+        break 
+        
+    if codigo in range(0,cant_productos+1):
+        print('que cantidad de', productos[codigo-1]['descripcion'], ' desea?')
+        cantidad_producto = abs(int(input('')))
+        if cantidad_producto == 0:
+            cantidad_producto = 1
+        total_producto = productos[codigo-1]['precio'] * cantidad_producto
+        subtotal = subtotal + total_producto
+        
+        if len(carrito) > 0:
+            for i in range(0,len(carrito)):
+                if codigo == carrito[i]['codigo'] :
+                    encontrado = True
+                    cantidad_anterior = carrito[i]['cantidad_producto']
+                    carrito[i]['cantidad_producto']= cantidad_anterior + cantidad_producto
+
+            if encontrado == False:
+                    carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})
+
+        elif encontrado == False:
+            carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})             
+            
+    else :
+        print('el codigo colocado no existe')
