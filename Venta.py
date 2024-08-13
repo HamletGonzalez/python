@@ -67,10 +67,10 @@ def llenar_carrito(productos):
             subtotal = subtotal + total_producto            
             if len(carrito) > 0:
                 for items in carrito:
-                    if codigo == carrito[items]['codigo'] :
+                    if codigo == items['codigo'] :
                         encontrado = True
-                        cantidad_anterior = carrito[items]['cantidad_producto']
-                        carrito[items]['cantidad_producto']= cantidad_anterior + cantidad_producto
+                        cantidad_anterior = items['cantidad_producto']
+                        items['cantidad_producto']= cantidad_anterior + cantidad_producto
                 if encontrado == False:
                     carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})
             elif encontrado == False:
@@ -97,8 +97,24 @@ def imprimiendo_factura(carrito,productos):
         if largo_precio_actual > largo_precio:
             largo_precio = largo_precio_actual
     for item in carrito:
+        largo_cantidad = 1
+        largo_importe = 1
         largo_cantidad_actual = len(str(item['cantidad_producto']))
+        if largo_cantidad_actual > largo_cantidad:
+            largo_cantidad = largo_cantidad_actual
         largo_importe_actual = len(str(item['cantidad_producto']*largo_precio))
-    print('ID','-'*largo_id,'DESCRIPCION','-'*largo_descripcion,'')  
+        if largo_importe_actual > largo_importe:
+            largo_importe = largo_importe_actual
+    print('ID','-'*(largo_id+2),'DESCRIPCION','-'*largo_descripcion,'PRECIO','-'*largo_precio,'CANTIDAD','-'*largo_cantidad,'IMPORTE')  
+    
+    for i in range(0,len(carrito)):
+        codigo_producto = carrito[i]['codigo']
+        descripcion_producto = productos[codigo_producto-1]['descripcion']
+        precio_producto = productos[codigo_producto-1]['precio']
+        cant_producto = carrito[i]['cantidad_producto']
+        importe = cant_producto * precio_producto
+        print(codigo_producto,' '*(largo_id+4-len(str(codigo_producto))),descripcion_producto,' '*(largo_descripcion+12-len(str(descripcion_producto))), precio_producto,' '*(largo_precio+7-len(str(precio_producto))), cant_producto,' '*(largo_cantidad+8-len(str(cant_producto))), importe)
+
+
     
 imprimiendo_factura(carrito,productos)      
