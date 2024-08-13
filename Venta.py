@@ -35,3 +35,47 @@ def imprimir_productos(productos):
         
 imprimir_productos(productos)
 
+
+print('\n','bienvenido a este punto de venta, que productos desea llevar?','\n')
+print('si desea salir eliga el codigo cero (0)','\n') 
+
+carrito = []
+
+
+def llenar_carrito(productos):
+    i = 0
+    subtotal = 0
+    encontrado = False
+    codigo = 1
+    cantidad_producto = 0
+    while codigo != 0:
+        encontrado = False
+        cantidad_producto = 0
+        numero_productos = len(productos)
+        #ingresar codigo
+        codigo = int(input('coloque el codigo del producto que desea: '))
+        if codigo == 0:
+            print("\n",'datos de la compra:',"\n")
+        elif codigo in range(0,numero_productos+1):#
+            while cantidad_producto <= 0:
+                descripcion = productos[codigo-1]['descripcion']
+                print('\n','que cantidad de', descripcion, ' desea?')
+                cantidad_producto = int(input(''))
+                if cantidad_producto <= 0:
+                    print('La cantidad del producto tiene que ser mayor a cero','\n')
+            total_producto = productos[codigo-1]['precio'] * cantidad_producto
+            subtotal = subtotal + total_producto            
+            if len(carrito) > 0:
+                for items in carrito:
+                    if codigo == carrito[items]['codigo'] :
+                        encontrado = True
+                        cantidad_anterior = carrito[items]['cantidad_producto']
+                        carrito[items]['cantidad_producto']= cantidad_anterior + cantidad_producto
+                if encontrado == False:
+                    carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})
+            elif encontrado == False:
+                carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})             
+        else :
+                print('el codigo colocado no existe','\n')
+
+llenar_carrito(productos)
