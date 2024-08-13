@@ -56,7 +56,7 @@ def llenar_carrito(productos):
         codigo = int(input('coloque el codigo del producto que desea: '))
         if codigo == 0:
             print("\n",'datos de la compra-->',"\n")
-        elif codigo in range(0,numero_productos+1):#
+        elif codigo in range(0,numero_productos+1):#arreglar esta parte
             while cantidad_producto <= 0:
                 descripcion = productos[codigo-1]['descripcion']
                 print('\n','que cantidad de', descripcion, ' desea?')
