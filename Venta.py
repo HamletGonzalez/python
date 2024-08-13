@@ -55,7 +55,7 @@ def llenar_carrito(productos):
         #ingresar codigo
         codigo = int(input('coloque el codigo del producto que desea: '))
         if codigo == 0:
-            print("\n",'datos de la compra:',"\n")
+            print("\n",'datos de la compra-->',"\n")
         elif codigo in range(0,numero_productos+1):#
             while cantidad_producto <= 0:
                 descripcion = productos[codigo-1]['descripcion']
@@ -79,3 +79,26 @@ def llenar_carrito(productos):
                 print('el codigo colocado no existe','\n')
 
 llenar_carrito(productos)
+
+
+def imprimiendo_factura(carrito,productos):
+    largo_id = 1 
+    largo_descripcion = 1
+    largo_precio = 1
+    print('detalle de la compra: ')
+    for item in productos:
+        largo_id_actual = len(str(item['id']))
+        largo_descripcion_actual = len(item['descripcion'])
+        largo_precio_actual = len(str(item['precio']))
+        if largo_id_actual > largo_id:
+            largo_id = largo_id_actual
+        if largo_descripcion_actual > largo_descripcion:
+            largo_descripcion = largo_descripcion_actual
+        if largo_precio_actual > largo_precio:
+            largo_precio = largo_precio_actual
+    for item in carrito:
+        largo_cantidad_actual = len(str(item['cantidad_producto']))
+        largo_importe_actual = len(str(item['cantidad_producto']*largo_precio))
+    print('ID','-'*largo_id,'DESCRIPCION','-'*largo_descripcion,'')  
+    
+imprimiendo_factura(carrito,productos)      
