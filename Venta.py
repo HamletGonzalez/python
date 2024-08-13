@@ -15,7 +15,6 @@ def imprimir_productos(productos):
     largo_id = 1 
     largo_descripcion = 1
     largo_precio = 1
-    
     for item in productos:
         largo_id_actual = len(str(item['id']))
         largo_descripcion_actual = len(item['descripcion'])
@@ -35,12 +34,9 @@ def imprimir_productos(productos):
         
 imprimir_productos(productos)
 
-
 print('\n','bienvenido a este punto de venta, que productos desea llevar?','\n')
 print('si desea salir eliga el codigo cero (0)') 
-
 carrito = []
-
 
 def llenar_carrito(productos):
     i = 0
@@ -62,7 +58,7 @@ def llenar_carrito(productos):
             for item in productos:
                 if codigo == item['id']:
                     codigo_existe = True
-            if codigo_existe == True: #arreglar esta parte
+            if codigo_existe == True: 
                 while cantidad_producto <= 0:
                     print('')
                     cantidad_producto = int(input('que cantidad desea? '))
@@ -76,10 +72,8 @@ def llenar_carrito(productos):
                             items['cantidad_producto']= cantidad_anterior + cantidad_producto
                     if encontrado == False:
                         carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto})
-                        #codigo = 0
                 elif encontrado == False:
                     carrito.append({'codigo': codigo,'cantidad_producto':cantidad_producto}) 
-                    #codigo = 0            
             elif codigo_existe == False :
                 print('el codigo colocado no existe')
                 codigo_existe = True
@@ -129,14 +123,6 @@ def imprimiendo_factura(carrito,productos):
     print('Subtotal(sin itbis): ',subtotal)
     print('Impuestos: ',(subtotal*0.18)) 
     print('Total: ',subtotal+(subtotal*0.18))
-    return
-    """for i in range(0,len(carrito)):
-        codigo_producto = carrito[i]['codigo']
-        descripcion_producto = productos[{codigo_producto:'descripcion'}]
-        precio_producto = productos[codigo_producto-1]['precio']
-        cant_producto = carrito[i]['cantidad_producto']
-        importe = cant_producto * precio_producto
-        print(codigo_producto,' '*(largo_id+4-len(str(codigo_producto))),descripcion_producto,' '*(largo_descripcion+12-len(str(descripcion_producto))), precio_producto,' '*(largo_precio+7-len(str(precio_producto))), cant_producto,' '*(largo_cantidad+8-len(str(cant_producto))), importe)"""
-
+       
 if len(carrito) > 0 :
     imprimiendo_factura(carrito,productos)      
