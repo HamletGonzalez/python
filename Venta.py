@@ -39,8 +39,6 @@ print('si desea salir eliga el codigo cero (0)')
 carrito = []
 
 def llenar_carrito(productos):
-    i = 0
-    subtotal = 0
     encontrado = False
     codigo_existe = True
     codigo = 1
