@@ -7,7 +7,7 @@
     {'id':55, 'descripcion':'Lechuga', 'precio':25}
     ]"""""
 
-class productos:
+class producto:
     def __init__(self,id,descripcion,precio):
         self.id = id
         self.descripcion = descripcion
@@ -29,12 +29,14 @@ class productos:
         "precio":self.precio,
         }
 
+productos = []
+def menu_productos(productos):
+    productos.append(producto(1,'habichuela',70))
+    productos.append(producto(2,'Arroz',60))
+    productos.append(producto(3,'Pollo',100))
+    productos.append(producto(4,'Aceite',55))
 
-
-productos1 = productos(1,'habichuela',70)
-productos2 = productos(2,'Arroz',60)
-
-        
+menu_productos(productos)       
 
 largo_id = 1
 largo_descripcion = 1
@@ -45,9 +47,9 @@ def imprimir_productos(productos):
     largo_descripcion = 1
     largo_precio = 1
     for item in productos:
-        largo_id_actual = len(str(item['id']))
-        largo_descripcion_actual = len(item['descripcion'])
-        largo_precio_actual = len(str(item['precio']))
+        largo_id_actual = len(str(item.getid()))
+        largo_descripcion_actual = len(item.getdescripcion())
+        largo_precio_actual = len(str(item.getprecio()))
         if largo_id_actual > largo_id:
             largo_id = largo_id_actual
         if largo_descripcion_actual > largo_descripcion:
@@ -58,7 +60,7 @@ def imprimir_productos(productos):
         largo_total = int(largo_total/2)-2
     print('-'*largo_total,'PRODUCTOS','-'*largo_total)
     for item in productos:
-        print(item['id'],'.',item['descripcion'],item['precio'],'RD$')
+        print(item.getid(),'.',item.getdescripcion(),item.getprecio(),'RD$')
         #print(item['id'],'-'*largo_id,{item:'descripcion'},'-'*largo_descripcion,{item:'precio'})
         
 imprimir_productos(productos)
@@ -83,7 +85,7 @@ def llenar_carrito(productos):
             print('\n','FIN DE LA COMPRA')    
         else :
             for item in productos:
-                if codigo == item['id']:
+                if codigo == item.getid():
                     codigo_existe = True
             if codigo_existe == True: 
                 while cantidad_producto <= 0:
@@ -117,9 +119,9 @@ def imprimiendo_factura(carrito,productos):
     subtotal = 0
     print('detalle de la compra: ')
     for item in productos:
-        largo_id_actual = len(str(item['id']))
-        largo_descripcion_actual = len(item['descripcion'])
-        largo_precio_actual = len(str(item['precio']))
+        largo_id_actual = len(str(item.getid()))
+        largo_descripcion_actual = len(item.getdescripcion())
+        largo_precio_actual = len(str(item.getprecio()))
         if largo_id_actual > largo_id:
             largo_id = largo_id_actual
         if largo_descripcion_actual > largo_descripcion:
@@ -140,9 +142,9 @@ def imprimiendo_factura(carrito,productos):
         codigo_producto = item['codigo']
         cant_producto = item['cantidad_producto']
         for items in productos:
-            if codigo_producto == items['id']:
-                descripcion_producto = items['descripcion']
-                precio_producto = items['precio']        
+            if codigo_producto == items.getid():
+                descripcion_producto = items.getdescripcion()
+                precio_producto = items.getprecio()        
         importe = cant_producto * precio_producto
         subtotal = subtotal + importe            
         print(codigo_producto,' '*(largo_id+4-len(str(codigo_producto))),descripcion_producto,' '*(largo_descripcion+12-len(str(descripcion_producto))), precio_producto,' '*(largo_precio+7-len(str(precio_producto))), cant_producto,' '*(largo_cantidad+8-len(str(cant_producto))), importe)
