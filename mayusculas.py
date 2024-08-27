@@ -7,10 +7,8 @@ palabras = ["Python", "es", "un", "lenguaje", "de", "programación"]
 
 def uppercase_strings(palabras):
     x = lambda a : a.upper()
-    
     palabras_upper = map(x,palabras)
     print(list(palabras_upper))
-    
 uppercase_strings(palabras)
     
     
