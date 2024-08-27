@@ -1,11 +1,40 @@
 #punto de venta
-productos = [
+"""""productos = [
     {'id':1, 'descripcion':'habichuela', 'precio':70},
     {'id':2, 'descripcion':'Arroz', 'precio':60},
     {'id':3, 'descripcion':'Pollo', 'precio':100},
     {'id':4, 'descripcion':'Aceite', 'precio':55},
     {'id':55, 'descripcion':'Lechuga', 'precio':25}
-    ]
+    ]"""""
+
+class productos:
+    def __init__(self,id,descripcion,precio):
+        self.id = id
+        self.descripcion = descripcion
+        self.precio = precio
+    
+    def getid(self):
+        return self.id
+    
+    def getdescripcion(self):
+        return self.descripcion
+    
+    def getprecio(self):
+        return self.precio
+    
+    def to_dict(self):
+        return {
+        "id":self.id,
+        "Descripcion":self.descripcion,
+        "precio":self.precio,
+        }
+
+
+
+productos1 = productos(1,'habichuela',70)
+productos2 = productos(2,'Arroz',60)
+
+        
 
 largo_id = 1
 largo_descripcion = 1
