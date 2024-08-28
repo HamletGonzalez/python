@@ -1,4 +1,39 @@
 
+class factura:
+    def __init__(self,id,cliente,fecha,subtotal,total) :
+        self.id = id
+        self.cliente = cliente
+        self.fecha = fecha
+        self.subtotal = subtotal
+        self.total = total
+    
+    def getid(self):
+        return self.id 
+    
+    def getcliente(self):
+        return self.cliente
+
+    def getfecha(self):
+        return self.fecha
+    
+    def getsubtotal(self):
+        return self.subtotal
+    
+    def gettotal(self):
+        return self.total
+    
+    def setid(self,new_id):
+        self.id = new_id
+
+    def setfecha(self,new_fecha):
+        self.fecha = new_fecha
+
+    def setsubtotal(self,new_subtotal):
+        self.subtotal = new_subtotal
+
+    def settotal(self,new_total):
+        self.total = new_total
+
 class articulo:
     def __init__(self,id,descripcion,cantidad_stock,precio,tipo_impuesto):
         self.id = id
@@ -82,4 +117,61 @@ def llenar_carrito(carrito,articulos):
             articulo_existente = False
 llenar_carrito(carrito,articulos)
     
+facturas = []
+def imprimir_factura(carrito,facturas):
+    cliente = input('A NOMBRE DE QUIEN ESTA HECHA LA COMPRA?  ')
+    fecha = input('FECHA DE LA COMPRA (DD/MM/AAAA) ')
+    id_factura = len(facturas) + 1
+    subtotal = 0
+    total = 0
+    impuestos = 0
+    largo_id = 1 
+    largo_descripcion = 1
+    largo_precio = 1
+    largo_cantidad = 1
+    largo_importe = 1
+
+    for items in articulos:
+        subtotal = subtotal + items.getprecio()
+        if items.gettipo_impuesto() == '01':
+            impuestos = impuestos + (subtotal*0.18)
+        elif items.gettipo_impuesto() == '02':
+            impuestos = impuestos + (subtotal*0.16)
+    total = subtotal + impuestos
+
+    facturas.append(factura(id_factura,cliente,fecha,subtotal, total)) 
+
+    for item in articulos:
+        largo_id_actual = len(str(item.getid()))
+        largo_descripcion_actual = len(item.getdescripcion())
+        largo_precio_actual = len(str(item.getprecio()))
+        if largo_id_actual > largo_id:
+            largo_id = largo_id_actual
+        if largo_descripcion_actual > largo_descripcion:
+            largo_descripcion = largo_descripcion_actual
+        if largo_precio_actual > largo_precio:
+            largo_precio = largo_precio_actual
+    for item in carrito:
+        largo_cantidad_actual = len(str(item['cantidad']))
+        if largo_cantidad_actual > largo_cantidad:
+            largo_cantidad = largo_cantidad_actual
+        largo_importe_actual = len(str(item['cantidad']*largo_precio))
+        if largo_importe_actual > largo_importe:
+            largo_importe = largo_importe_actual
+    print('ID','-'*(largo_id+2),'DESCRIPCION','-'*largo_descripcion,'PRECIO','-'*largo_precio,'CANTIDAD','-'*largo_cantidad,'IMPORTE')  
+
+    for items in carrito:
+        id_articulo = items['id_articulo']
+        cantidad_articulo = items['cantidad']
+        for items in articulos:
+            if id_articulo == items.getid():
+                descripcion_articulo = items.getdescripcion()
+                precio_articulo = items.getprecio()
+                importe = cantidad_articulo * precio_articulo
+        print(id_articulo,' '*(largo_id+4-len(str(id_articulo))),descripcion_articulo,' '*(largo_descripcion+12-len(str(descripcion_articulo))), precio_articulo,' '*(largo_precio+7-len(str(precio_articulo))), cantidad_articulo,' '*(largo_cantidad+8-len(str(cantidad_articulo))), importe)
+
+imprimir_factura(carrito,facturas)
+
+
+
 
