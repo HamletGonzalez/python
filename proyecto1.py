@@ -65,7 +65,7 @@ def menu(articulos):
     articulos.append(articulo(1,'GALLETAS',50,120,'00'))
     articulos.append(articulo(2,'JABON',20,100,'01'))
     articulos.append(articulo(3,'MANZANAS',35,15,'02'))
-    articulos.append(articulo(4,'JUGO DE FRUTAS',20,225,'02'))
+    articulos.append(articulo(4,'JUGO DE FRUTAS',20,215,'02'))
     articulos.append(articulo(5,'BOTELLA DE AGUA',20,225,'01'))
 
 def imprimir_menu(articulos):
@@ -83,11 +83,11 @@ def llenar_carrito(carrito,articulos):
     cantidad_articulo = 0
     articulo_repetido = False
     articulo_existente = False
-    print('\n','QUE DESEA LLEVAR?','\n','EN CASO DE QUERER SALIR DEL SISTEMA ELIGA EL CODIGO CERO (0) \n')
+    print('\n','QUE DESEA LLEVAR?','\n','EN CASO DE QUERER TERMINAR LA COMPRA ELIGA EL CODIGO CERO (0) \n')
     while id_articulo != 0:
         id_articulo = int(input('INGRESE EL CODIGO DEL ARTICULO QUE DESEA: '))
         if id_articulo == 0:
-            print('HA ELEGIDO SALIR DEL PROGRAMA')
+            print('HA ELEGIDO TERMINAR LA COMPRA')
         else:
             for item in articulos:
                 if item.getid() == id_articulo:
@@ -95,6 +95,7 @@ def llenar_carrito(carrito,articulos):
                     print('DEL ARTICULO SELECCIONADO TENEMOS ', item.getcantidad(),' UNIDADES' )
                     while cantidad_articulo <= 0 :
                         cantidad_articulo = int(input('CUANTAS DESEA? : '))
+                        print('')
                         if cantidad_articulo <= 0 or cantidad_articulo > item.getcantidad():
                             print('LA CANTIDAD SELECCIONADA NO ES VALIDA')
                             cantidad_articulo = 0
@@ -131,15 +132,18 @@ def imprimir_factura(carrito,facturas):
     largo_cantidad = 1
     largo_importe = 1
 
-    for items in articulos:
-        subtotal = subtotal + items.getprecio()
+    for items in carrito:
+        subtotal = subtotal + items.getprecio() #arreglar esta parte
         if items.gettipo_impuesto() == '01':
             impuestos = impuestos + (subtotal*0.18)
         elif items.gettipo_impuesto() == '02':
             impuestos = impuestos + (subtotal*0.16)
     total = subtotal + impuestos
 
-    facturas.append(factura(id_factura,cliente,fecha,subtotal, total)) 
+    facturas.append(factura(id_factura,cliente,fecha,subtotal, total))
+    
+    for items in facturas:
+        print('FACTURA #: ',items.getid(),'\n','CLIENTE : ',cliente,'\n','FECHA : ',fecha,'\n\n','DETALLES DE LA FACTURA: ')
 
     for item in articulos:
         largo_id_actual = len(str(item.getid()))
@@ -170,7 +174,11 @@ def imprimir_factura(carrito,facturas):
                 importe = cantidad_articulo * precio_articulo
         print(id_articulo,' '*(largo_id+4-len(str(id_articulo))),descripcion_articulo,' '*(largo_descripcion+12-len(str(descripcion_articulo))), precio_articulo,' '*(largo_precio+7-len(str(precio_articulo))), cantidad_articulo,' '*(largo_cantidad+8-len(str(cantidad_articulo))), importe)
 
-imprimir_factura(carrito,facturas)
+    print('\n TOTALES:\n','SUBTOTAL : ',subtotal,'\n IMPUESTOS : ', impuestos, '\n TOTAL : ',total)
+    
+
+if len(carrito) > 0:
+    imprimir_factura(carrito,facturas)
 
 
 
