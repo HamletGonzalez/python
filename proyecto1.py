@@ -115,7 +115,7 @@ def llenar_carrito(carrito,articulos):
                                     nueva_cantidad = item.getcantidad() - cantidad_articulo
                                     item.setcantidad(nueva_cantidad)
             if articulo_existente == False:
-                print('EL CODIGO DEL ARTICULO NO EXISTE')
+                print('EL CODIGO DEL ARTICULO NO EXISTE \n')
             cantidad_articulo = 0
             articulo_repetido = False
             articulo_existente = False
