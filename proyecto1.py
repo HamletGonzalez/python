@@ -92,25 +92,28 @@ def llenar_carrito(carrito,articulos):
             for item in articulos:
                 if item.getid() == id_articulo:
                     articulo_existente = True
-                    print('DEL ARTICULO SELECCIONADO TENEMOS ', item.getcantidad(),' UNIDADES' )
-                    while cantidad_articulo <= 0 :
-                        cantidad_articulo = int(input('CUANTAS DESEA? : '))
-                        print('')
-                        if cantidad_articulo <= 0 or cantidad_articulo > item.getcantidad():
-                            print('LA CANTIDAD SELECCIONADA NO ES VALIDA')
-                            cantidad_articulo = 0
-                        else:
-                            for items in carrito:
-                                if id_articulo == items['id_articulo']:
-                                    articulo_repetido = True
-                                    cantidad_anteriror = items['cantidad']
-                                    items['cantidad'] = cantidad_anteriror + cantidad_articulo
-                                    nueva_cantidad = item.getcantidad() - (cantidad_articulo )
+                    if item.getcantidad() <= 0:
+                        print('DEL ARTICULO SELECCIONADO NO NOS QUEDAN UNIDADES')
+                    else:
+                        print('DEL ARTICULO SELECCIONADO TENEMOS ', item.getcantidad(),' UNIDADES' )
+                        while cantidad_articulo <= 0 :
+                            cantidad_articulo = int(input('CUANTAS DESEA? : '))
+                            print('')
+                            if cantidad_articulo <= 0 or cantidad_articulo > item.getcantidad():
+                                print('LA CANTIDAD SELECCIONADA NO ES VALIDA')
+                                cantidad_articulo = 0
+                            else:
+                                for items in carrito:
+                                    if id_articulo == items['id_articulo']:
+                                        articulo_repetido = True
+                                        cantidad_anteriror = items['cantidad']
+                                        items['cantidad'] = cantidad_anteriror + cantidad_articulo
+                                        nueva_cantidad = item.getcantidad() - (cantidad_articulo )
+                                        item.setcantidad(nueva_cantidad)
+                                if articulo_repetido == False:
+                                    carrito.append({'id_articulo':id_articulo,'cantidad':cantidad_articulo})
+                                    nueva_cantidad = item.getcantidad() - cantidad_articulo
                                     item.setcantidad(nueva_cantidad)
-                            if articulo_repetido == False:
-                                carrito.append({'id_articulo':id_articulo,'cantidad':cantidad_articulo})
-                                nueva_cantidad = item.getcantidad() - cantidad_articulo
-                                item.setcantidad(nueva_cantidad)
             if articulo_existente == False:
                 print('EL CODIGO DEL ARTICULO NO EXISTE')
             cantidad_articulo = 0
@@ -133,17 +136,20 @@ def imprimir_factura(carrito,facturas):
     largo_importe = 1
 
     for items in carrito:
-        subtotal = subtotal + items.getprecio() #arreglar esta parte
-        if items.gettipo_impuesto() == '01':
-            impuestos = impuestos + (subtotal*0.18)
-        elif items.gettipo_impuesto() == '02':
-            impuestos = impuestos + (subtotal*0.16)
+        for item in articulos:
+            if items['id_articulo'] == item.getid():
+                subtotal = subtotal + (item.getprecio()*items['cantidad'])
+                subtotal2 = item.getprecio()*items['cantidad']
+                if item.gettipo_impuesto() == '01':
+                    impuestos = impuestos + (subtotal2*0.18)
+                elif item.gettipo_impuesto() == '02':
+                    impuestos = impuestos + (subtotal2*0.16)
     total = subtotal + impuestos
 
     facturas.append(factura(id_factura,cliente,fecha,subtotal, total))
     
     for items in facturas:
-        print('FACTURA #: ',items.getid(),'\n','CLIENTE : ',cliente,'\n','FECHA : ',fecha,'\n\n','DETALLES DE LA FACTURA: ')
+        print('\n FACTURA #: ',items.getid(),'\n','CLIENTE : ',cliente,'\n','FECHA : ',fecha,'\n\n','DETALLES DE LA FACTURA: ')
 
     for item in articulos:
         largo_id_actual = len(str(item.getid()))
