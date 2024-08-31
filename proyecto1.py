@@ -93,7 +93,7 @@ def llenar_carrito(carrito,articulos):
                 if item.getid() == id_articulo:
                     articulo_existente = True
                     if item.getcantidad() <= 0:
-                        print('DEL ARTICULO SELECCIONADO NO NOS QUEDAN UNIDADES')
+                        print('DEL ARTICULO SELECCIONADO (',item.getdescripcion(),') NO NOS QUEDAN UNIDADES')
                     else:
                         print('DEL ARTICULO SELECCIONADO TENEMOS ', item.getcantidad(),' UNIDADES' )
                         while cantidad_articulo <= 0 :
@@ -180,7 +180,8 @@ def imprimir_factura(carrito,facturas):
                 importe = cantidad_articulo * precio_articulo
         print(id_articulo,' '*(largo_id+4-len(str(id_articulo))),descripcion_articulo,' '*(largo_descripcion+12-len(str(descripcion_articulo))), precio_articulo,' '*(largo_precio+7-len(str(precio_articulo))), cantidad_articulo,' '*(largo_cantidad+8-len(str(cantidad_articulo))), importe)
 
-    print('\n TOTALES:\n','SUBTOTAL : ',subtotal,'\n IMPUESTOS : ', impuestos, '\n TOTAL : ',total)
+    #facturas[0].getsubtotal()
+    print('\n TOTALES:\n','SUBTOTAL : ',facturas[0].getsubtotal(),'\n IMPUESTOS : ', impuestos, '\n TOTAL : ',facturas[0].gettotal())
     
 
 if len(carrito) > 0:
