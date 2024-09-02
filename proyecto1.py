@@ -83,12 +83,16 @@ def llenar_carrito(carrito,articulos):
     cantidad_articulo = 0
     articulo_repetido = False
     articulo_existente = False
+    desea_continuar = 'S'
     print('\n','QUE DESEA LLEVAR?','\n','EN CASO DE QUERER TERMINAR LA COMPRA ELIGA EL CODIGO CERO (0) \n')
     while id_articulo != 0:
-        id_articulo = int(input('INGRESE EL CODIGO DEL ARTICULO QUE DESEA: '))
-        if id_articulo == 0:
-            print('HA ELEGIDO TERMINAR LA COMPRA')
-        else:
+        if len(carrito) > 0:
+            desea_continuar = input('DESEA AÑADIR UN PRODUCTO? S/N : ')
+            if desea_continuar == 'N':
+                print('HA ELEGIDO TERMINAR LA COMPRA')
+                id_articulo = 0
+        if desea_continuar == 'S':    
+            id_articulo = int(input('INGRESE EL CODIGO DEL ARTICULO QUE DESEA: '))
             for item in articulos:
                 if item.getid() == id_articulo:
                     articulo_existente = True
