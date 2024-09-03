@@ -1,4 +1,6 @@
 
+import os
+
 class factura:
     def __init__(self,id,cliente,fecha,subtotal,total) :
         self.id = id
@@ -68,12 +70,13 @@ def menu(articulos):
     articulos.append(articulo(4,'JUGO DE FRUTAS',20,215,'02'))
     articulos.append(articulo(5,'BOTELLA DE AGUA',20,225,'01'))
 
+print('BIENVENIDO A LA SURTIDORA ITLA SANTIAGO SRL.','\n')
 def imprimir_menu(articulos):
     menu(articulos)
-    print('BIENVENIDO A LA SURTIDORA ITLA SANTIAGO SRL.','\n')
     print('---PRODUCTOS DISPONIBLES---')
     for item in articulos:
         print(item.getid(),'.',item.getdescripcion(),' ',item.getprecio(),'RD$')
+    print('')
     
 imprimir_menu(articulos)
 
@@ -88,10 +91,13 @@ def llenar_carrito(carrito,articulos):
     while id_articulo != 0:
         if len(carrito) > 0:
             desea_continuar = input('DESEA AÑADIR UN PRODUCTO? S/N : ')
-            if desea_continuar == 'N':
+            if desea_continuar.upper() == 'N':
                 print('HA ELEGIDO TERMINAR LA COMPRA')
                 id_articulo = 0
-        if desea_continuar == 'S':    
+            else:
+                os.system("cls")
+                imprimir_menu(articulos)
+        if desea_continuar.upper() == 'S':
             id_articulo = int(input('INGRESE EL CODIGO DEL ARTICULO QUE DESEA: '))
             for item in articulos:
                 if item.getid() == id_articulo:
@@ -129,6 +135,7 @@ facturas = []
 def imprimir_factura(carrito,facturas):
     cliente = input('A NOMBRE DE QUIEN ESTA HECHA LA COMPRA?  ')
     fecha = input('FECHA DE LA COMPRA (DD/MM/AAAA) ')
+    os.system("cls")
     id_factura = len(facturas) + 1
     subtotal = 0
     total = 0
