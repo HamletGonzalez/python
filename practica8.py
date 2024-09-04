@@ -26,6 +26,9 @@ class almacen:
     def setitems(self,new_items):
         self.items = new_items
     
+    def setvolumen_dis(self,new_volumen_dis):
+        self.volumen_dis = new_volumen_dis
+    
 class item:
     def __init__(self,id,descripcion,volumen,almacen_desig) :
         self.id = id
@@ -44,7 +47,9 @@ class item:
     
     def getalmacen_desig(self):
         return self.almacen_desig
-            
+    
+    def setalmacen_desig(self,new_almacen):
+            self.almacen_desig = new_almacen
 
 almacenes = []
 items = []
@@ -81,11 +86,51 @@ def registrar_item(items):
             if (x.getvolumen_dis() - volumen) < (x.getvolumen_total()*0.2):
                 print('EL VOLUMEN DEL ITEM ES MAYOR A LO PERMITIDO EN ESTE ALMACEN')
                 almacen_encontrado = False
+            else:   
+                items_almacen = x.getitems()
+                items_almacen.append({'id_item':id_item,'volumen_item':volumen})
+                x.setitems(items_almacen)
+                nuevo_volumen = (x.getvolumen_dis() - volumen)
+                x.setvolumen_dis(nuevo_volumen)
     if almacen_encontrado == True:
         items.append(item(id_item,descripion,volumen,almacen))
         print('EL ITEM FUE REGISTRADO CON EXITO')
     else:   
         print('EL ITEM NO PUDO SER REGISTRADO ')
+
+def insertar_item(items):
+    almacen_encontrado = False
+    item_encontrado = False
+    listar_items(items,almacenes)
+    id_item = int(input('INGRESE EL ID DEL PRODUCTO QUE DESEA INSERTAR'))
+    os.system('cls')
+    listar_almacenes(almacenes)
+    almacen = int(input('INGRESE EL ID DEL ALMACEN A INSERTAR : '))
+    for x in items:
+        if x.getid() == id_item:
+            item_encontrado = True
+            volumen = x.getvolumen()
+            if x.getalmacen_desig() > 0:
+                print('ESTE ITEM YA PERTENECE A UN ALMACEN')
+            else:
+                for i in almacenes:
+                    if i.getid() == almacen:
+                        almacen_encontrado = True
+                        if (i.getvolumen_dis() - volumen) < (i.getvolumen_total()*0.2):
+                            print('EL VOLUMEN DEL ITEM ES MAYOR A LO DISPONIBLE EN ESTE ALMACEN')
+                        else:
+                            items_almacen = i.getitems()
+                            items_almacen.append({'id_item':id_item,'volumen_item':volumen})
+                            i.setitems(items_almacen)
+                            nuevo_volumen = (i.getvolumen_dis() - volumen)
+                            i.setvolumen_dis(nuevo_volumen)
+                            x.setalmacen_desig(almacen)
+    if item_encontrado == False:
+        print('EL ITEM NO PUDO SER ENCONTRADO')
+    if almacen_encontrado == True: 
+        print('EL ITEM FUE REGISTRADO CON EXITO')
+    else:   
+        print('HA OCURRIDO UN ERROR CON EL ALMACEN')
 
 def registrar_almacen(almacenes):
     id_almacen = len(almacenes) + 1
@@ -138,33 +183,57 @@ def listar_items(items,almacenes):
 
 def listar_almacenes(almacenes):
     print('---LISTADO DE ALMACENES---')
+    largo_id = 1 
+    largo_nombre = 1
+    largo_volumen_tot = 1
+    largo_volumen_dis = 1
+    for x in almacenes:
+        largo_id_actual = len(str(x.getid()))
+        largo_nombre_actual = len(x.getnombre())
+        largo_volumen_tot_actual = len(str(x.getvolumen_total()))
+        largo_volumen_dis_actual = len(str(x.getvolumen_dis()))
+        if largo_id_actual > largo_id:
+            largo_id = largo_id_actual
+        if largo_nombre_actual > largo_nombre:
+            largo_nombre = largo_nombre_actual
+        if largo_volumen_tot_actual > largo_volumen_tot:
+            largo_volumen_tot = largo_volumen_tot_actual
+        if largo_volumen_dis_actual > largo_volumen_dis:
+            largo_volumen_dis = largo_volumen_dis_actual
+    print('ID','-'*(largo_id+2),'NOMBRE','-'*(largo_nombre),'CAPACIDAD MAXIMA (M3)','-'*(largo_volumen_tot),'CAPACIDAD DISPONIBLE')
     for x in almacenes:
         id_almacen = x.getid()
         nombre = x.getnombre()
         volumen_total = x.getvolumen_total()
         volumen_dis = x.getvolumen_dis()
-        print(id_almacen,' ',nombre,' ', volumen_total,' ',volumen_dis,' ')
+        print(id_almacen,' '*(largo_id+4-len(str(id_almacen))),nombre,' '*(largo_nombre+6-len(nombre)), volumen_total,' '*(largo_volumen_tot+21-len(str(volumen_total))),volumen_dis,' ')
 
 def eliminar_item(items,almacenes):        
     listar_items(items,almacenes)
     print('')
     id_encontrado = False
-    id_item = int(input('COLOQUE EL ID DEL ITEM QUE DESEA RETIRAR'))
+    id_item = int(input('COLOQUE EL ID DEL ITEM QUE DESEA RETIRAR :'))
     for x in items:
         if id_item == x.getid():        
             id_encontrado = True
             almacen = x.getalmacen_desig()
+            volumen = x.getvolumen()
             for i in almacenes:
                 if almacen == i.getid():
                     items_almacen = i.getitems()
                     for a in items_almacen:
-                        if id_item == a.getid():
+                        if id_item == a['id_item']:
                             items_almacen.remove(a)
-                            a.setitems(items_almacen)
+                            i.setitems(items_almacen)
+                            nuevo_volumen = (i.getvolumen_dis() + volumen)
+                            i.setvolumen_dis(nuevo_volumen)
+                            x.setalmacen_desig(0)
     if id_encontrado == False:
         print('EL ID DEL ITEM COLOCADO NO SE ENCUENTRA')
-    else: 
-        print('EL ITEM FUE RETIRADO CON EXITO ')
+    elif almacen == 0: 
+        print('EL ITEM NO SE ENCUENTRA ACTUALMENTE EN NINGUN ALMACEN')
+    else:
+        print('EL ITEM FUE RETIRADO CON EXITO')
 
 
 def presentar_menu():
@@ -172,7 +241,7 @@ def presentar_menu():
     
     desicion_continuar = 'S'
     while desicion_continuar.upper() == 'S':
-        print('----PROCESOS---- \n','1-> REGISTRAR ITEM \n', '2-> REGISTRAR ALMACEN \n','3-> RETIRAR ITEM \n', '4-> LISTAR ITEMS \n','5-> LISTAR ALMACENES \n' )
+        print('----PROCESOS---- \n','1-> REGISTRAR ITEM \n', '2-> REGISTRAR ALMACEN \n','3-> INSERTAR ITEM \n', '4-> RETIRAR ITEMS \n','5-> LISTAR ITEMS \n','6-> LISTAR ALMACENES' )
         proceso = int(input('QUE PROCESO DESEA REALIZAR? :'))
         os.system('cls')
         if proceso == 1:
@@ -180,10 +249,12 @@ def presentar_menu():
         elif proceso == 2:
             registrar_almacen(almacenes)
         elif proceso == 3:
-            eliminar_item(items,almacenes)
+            insertar_item(items)
         elif proceso == 4:
-            listar_items(items,almacenes)
+            eliminar_item(items,almacenes)
         elif proceso == 5:
+            listar_items(items,almacenes)
+        elif proceso == 6:
             listar_almacenes(almacenes)
         else:
             print('PROCESO NO ENCONTRADO \n')
