@@ -78,6 +78,7 @@ def registrar_item(items):
     id_item = len(items) + 1
     descripion = input('INGRESE LA DESCRIPCION DEL ITEM A REGISTRAR : ')
     volumen = int(input('INGRESE EL VOLUMEN (M3) DEL ARTICULO : '))
+    listar_almacenes(almacenes)
     almacen = int(input('INGRESE EL ID DEL ALMACEN DEL ARTICULO : '))
     for x in almacenes:
         if x.getid() == almacen:
@@ -261,6 +262,7 @@ def presentar_menu():
             #desicion_continuar = 'S'
         print('')
         desicion_continuar = input('DESEA CONTINUAR CON EL PROGRAMA? S/N :')
+        os.system('cls')
         
         if desicion_continuar.upper() == 'N':
             print('HA SELECCIONADO SALIR DEL PROGRAMA')
