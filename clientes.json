@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "nombre": "JUAN",
+        "usuario": "JUAN",
+        "contrasena": "123456",
+        "balance": 12000
+    },
+    {
+        "id": 2,
+        "nombre": "MARIO",
+        "usuario": "MARIO2",
+        "contrasena": "MARIO123",
+        "balance": 24000
+    }
+]
