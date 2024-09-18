@@ -4,17 +4,24 @@
         "nombre": "JUAN",
         "usuario": "JUAN",
         "contrasena": "123456",
-        "balance": 11000,
+        "balance": 10000,
         "estado": "A",
-        "movimientos":[]
+        "movimientos": [
+            {
+                "numero": 1,
+                "usuario": 1,
+                "monto": 1000,
+                "beneficiario": 2
+            }
+        ]
     },
     {
         "id": 2,
         "nombre": "MARIO",
         "usuario": "MARIO2",
         "contrasena": "MARIO123",
-        "balance": 25000,
+        "balance": 26000,
         "estado": "A",
-        "movimientos":[]
+        "movimientos": []
     }
 ]

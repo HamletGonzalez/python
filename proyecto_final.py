@@ -98,6 +98,7 @@ def llenar_clientes_empleados():
 def cargar_datos():
     global empleados
     global clientes
+    global movimientos
     with open ('empleados.json','r') as archivo:
         datos = json.load(archivo)
         #datos_dict = json.load(archivo)
@@ -109,6 +110,14 @@ def cargar_datos():
         #datos2_dict = json.load(archivo2)
         datos2=[cliente(Cliente['id'], Cliente['nombre'], Cliente['usuario'], Cliente['contrasena'],Cliente['balance'],Cliente['estado'],Cliente['movimientos']) for Cliente in datos2]
         clientes = datos2
+
+    with open ('movimientos.json','r') as archivo3:
+        datos3 = json.load(archivo3)
+        #datos2_dict = json.load(archivo2)
+        #datos3=[(movimientos['numero'], movimientos['usuario'], movimientos['monto'], movimientos['beneficiario']) for movimientos in datos3]
+        movimientos = datos3
+
+
         
 
 cargar_datos()
@@ -157,8 +166,8 @@ def login():
                                 codigo_usuario = empleado.getid()
                     if contrasena_correcta == True and usuario_encontrado == True:
                         print('\n INICIO DE SESION EXITOSO')
-                        return codigo_usuario
-                        return tipo_sesion
+                        return codigo_usuario, tipo_sesion
+                        #return tipo_sesion
                     else :
                         contrasena_correcta = False 
                         usuario_encontrado = False
@@ -217,20 +226,53 @@ def guardar_transferencia(codigo_usuario,monto,beneficiario):
             with open('movimientos.json','w') as archivo:
                 json.dump(movimientos_dict,archivo,indent=4)    
 
+def abonar_cuenta():
+    print('HA SELECCIONADO  LA OPCION PARA ABONAR SU CUENTA\nQUE MONTO DESEA ABONAR?')
+    monto_abonar = int(input())
+    if monto_abonar <= 0:
+        print('EL MONTO NO PUEDE SER MENOR A CERO')
+    else:
+        print('\nINGRESE SU CONTRASENA PARA CONFIRMAR SU IDENTIDAD')
+        contrasena = input()
+        for usuario in clientes:
+            if codigo_usuario == usuario.getid():
+                if contrasena.upper() == usuario.getcontrasena():
+                    balance_nuevo = usuario.getbalance() + monto_abonar 
+                    usuario.setbalance(balance_nuevo)
+                    print('PROCESO COMPLETADO CON EXITO\nSU NUEVO BALANCE ES DE: ',usuario.getbalance())
+                else:
+                    print('LA CONFIRMACION DE IDENTIDAD NO PUDO SER COMPLEATADA CON EXITO')
+
+def consultar_movimientos():
+    print('')
+
+def registrar_clientes():
+    print('HA SELECCIONADO LA OPCION DE REGISTAR CLIENTE\n')
+    id = len(clientes) + 1
+    nombre = input('INGRESE EL NOMBRE COMPLETO DEL CLIENTE\n')
+    usuario = input('INGRESE EL USUARIO CON EL CUAL INICIARA SESION\n')
+    contrasena = input('INGRESE LA CONSTRASENA CON LA CUAL INICIARA SESION\n')
+    balance = int(input('CUAL SERA EL BALANCE INICIAL DEL CLIENTE?\n'))
+    if balance <= 0:
+        print('EL BALANCE INICIAL NO PUEDE SER MENOR A CERO')
+    else:
+        clientes.append(cliente(id,nombre.upper(),usuario,contrasena,balance,'A',[]))
+        print('CLIENTE REGISTRADO CON EXITO')
+
     
-            
 def imprimir_menu():
     os.system('cls')
     proceso = 0
     desicion = 'S'
     print('QUE PROCESO DESEA REALIZAR: \n')
     if tipo_sesion == 1:
-        while desicion == 'S':
+        while desicion.upper() == 'S':
             while proceso <= 0 or proceso > 4:
                 print('1-> REGISTRAR UN CLIENTE \n','2-> LISTAR CLIENTES\n','3-> VER MOVIMIENTOS\n','4-> CAMBIAR ESTATUS DE UN CLIENTE\n')
                 proceso = int(input())
                 if proceso == 1:
                     print('')
+                    registrar_clientes()
                 elif proceso == 2:
                     print('')
                 elif proceso == 3:
@@ -239,7 +281,7 @@ def imprimir_menu():
                     print('')
                 else:
                     print('PROCESO INVALIDO, INTENTE NUEVAMENTE ')
-            input('DESEA CONTINUAR? S/N')
+            desicion = input('DESEA CONTINUAR? S/N   ')
     if tipo_sesion == 2:
         while proceso <= 0 or proceso > 4:
             print('1-> CONSULTAR BALANCE \n','2-> REALIZAR TRANSFERENCIAS\n','3-> ABONAR CUENTA\n','4-> VER MOVIMIENTOS')        
@@ -252,6 +294,7 @@ def imprimir_menu():
                 realizar_transferencia()
             elif proceso == 3:
                 print('')
+                abonar_cuenta()
             elif proceso == 4:    
                 print('')
             else:
