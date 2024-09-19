@@ -21,7 +21,7 @@
         "usuario": "MARIO2",
         "contrasena": "MARIO123",
         "balance": 26000,
-        "estado": "A",
+        "estado": "I",
         "movimientos": []
     }
 ]

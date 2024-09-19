@@ -76,6 +76,8 @@ class cliente:
     def setmovimientos(self,nuevo_movimiento):
         self.movimientos = nuevo_movimiento
         
+    def setestado(self,nuevo_estado):
+        self.estado = nuevo_estado
     
 
         
@@ -165,7 +167,7 @@ def login():
                                 contrasena_correcta = True
                                 codigo_usuario = empleado.getid()
                     if contrasena_correcta == True and usuario_encontrado == True:
-                        print('\n INICIO DE SESION EXITOSO')
+                        print('\nINICIO DE SESION EXITOSO')
                         return codigo_usuario, tipo_sesion
                         #return tipo_sesion
                     else :
@@ -256,19 +258,42 @@ def registrar_clientes():
     if balance <= 0:
         print('EL BALANCE INICIAL NO PUEDE SER MENOR A CERO')
     else:
-        clientes.append(cliente(id,nombre.upper(),usuario,contrasena,balance,'A',[]))
+        clientes.append(cliente(id,nombre.upper(),usuario.upper(),contrasena.upper(),balance,'A',[]))
         print('CLIENTE REGISTRADO CON EXITO')
 
-    
+def cambiar_estatus():
+    print('HA SELECCIONADO LA OPCION DE CAMBIAR EL ESTATUS DEL CLIENTE')
+    cliente_encontrado = False
+    id = int(input('\nINGRESE EL NUMERO DE CUENTA LA CUAL DESEA CAMBIAR EL ESTATUS\n'))
+    for cliente in clientes:
+        if cliente.getid() == id:
+            cliente_encontrado = True
+            if cliente.getestado() == 'A':
+                print('LA CUENTA INGRESADA SE ENCUENTRA ACTIVA Y ESTA A NOMBRE DE: ',cliente.getnombre())
+                estado_cambio = 'I'
+            else :
+                print('LA CUENTA INGRESADA SE ENCUENTRA INACTIVA Y ESTA A NOMBRE DE: ',cliente.getnombre())
+                estado_cambio = 'A'
+            print('PARA CAMBIAR EL ESTADO DEL CLIENTE INGRESE SU CONTRASENA:')
+            contrasena = input('')
+            for empleado in empleados:
+                if empleado.getid() == codigo_usuario:
+                    if contrasena.upper() == empleado.getcontrasena():
+                        cliente.setestado(estado_cambio)
+                        print('EL ESTADO DE LA CUENTA FUE CAMBIADO CON EXITO')
+
+            
 def imprimir_menu():
     os.system('cls')
     proceso = 0
     desicion = 'S'
-    print('QUE PROCESO DESEA REALIZAR: \n')
+    #print('QUE PROCESO DESEA REALIZAR: \n')
     if tipo_sesion == 1:
         while desicion.upper() == 'S':
             while proceso <= 0 or proceso > 4:
-                print('1-> REGISTRAR UN CLIENTE \n','2-> LISTAR CLIENTES\n','3-> VER MOVIMIENTOS\n','4-> CAMBIAR ESTATUS DE UN CLIENTE\n')
+                os.system('cls')
+                print(' 1-> REGISTRAR UN CLIENTE \n','2-> LISTAR CLIENTES\n','3-> VER MOVIMIENTOS\n','4-> CAMBIAR ESTATUS DE UN CLIENTE\n')
+                print('QUE PROCESO DESEA REALIZAR: \n')
                 proceso = int(input())
                 if proceso == 1:
                     print('')
@@ -279,27 +304,35 @@ def imprimir_menu():
                     print('')
                 elif proceso == 4:    
                     print('')
+                    cambiar_estatus()
                 else:
                     print('PROCESO INVALIDO, INTENTE NUEVAMENTE ')
             desicion = input('DESEA CONTINUAR? S/N   ')
+            if desicion.upper() == 'S':
+                proceso = 0
     if tipo_sesion == 2:
-        while proceso <= 0 or proceso > 4:
-            print('1-> CONSULTAR BALANCE \n','2-> REALIZAR TRANSFERENCIAS\n','3-> ABONAR CUENTA\n','4-> VER MOVIMIENTOS')        
-            proceso = int(input())
-            if proceso == 1:
-                print('')
-                consultar_balance()
-            elif proceso == 2:
-                print('')
-                realizar_transferencia()
-            elif proceso == 3:
-                print('')
-                abonar_cuenta()
-            elif proceso == 4:    
-                print('')
-            else:
-                print('PROCESO INVALIDO, INTENTE NUEVAMENTE ')
-        input('DESEA CONTINUAR? S/N  ')
+        while desicion.upper() == 'S':
+            while proceso <= 0 or proceso > 4:
+                os.system('cls')
+                print('1-> CONSULTAR BALANCE \n','2-> REALIZAR TRANSFERENCIAS\n','3-> ABONAR CUENTA\n','4-> VER MOVIMIENTOS\n')  
+                print('QUE PROCESO DESEA REALIZAR: \n')      
+                proceso = int(input())
+                if proceso == 1:
+                    print('')
+                    consultar_balance()
+                elif proceso == 2:
+                    print('')
+                    realizar_transferencia()
+                elif proceso == 3:
+                    print('')
+                    abonar_cuenta()
+                elif proceso == 4:    
+                    print('')
+                else:
+                    print('PROCESO INVALIDO, INTENTE NUEVAMENTE ')
+            desicion = input('DESEA CONTINUAR? S/N  ')
+            if desicion.upper() == 'S':
+                proceso = 0
     print('HA SALIDO DEL SISTEMA')
     empleados_dict=[empleado.to_dict() for empleado in empleados]
     with open('empleados.json','w') as archivo:
