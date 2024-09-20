@@ -282,7 +282,62 @@ def cambiar_estatus():
                         cliente.setestado(estado_cambio)
                         print('EL ESTADO DE LA CUENTA FUE CAMBIADO CON EXITO')
 
+def listar_clientes():
+    print('---LISTADO DE CLIENTES---')
+    largo_id = 1 
+    largo_nombre = 1
+    largo_usuario = 1
+    largo_contrasena = 1
+    largo_balance = 1
+    largo_estado = 1
+    for x in clientes:
+        largo_id_actual = len(str(x.getid()))
+        largo_nombre_actual = len(x.getnombre())
+        largo_usuario_actual = len(str(x.getusuario()))
+        largo_contrasena_actual = len(str(x.getcontrasena()))
+        largo_balance_actual = len(str(x.getbalance()))
+        largo_estado_actual = len(str(x.getestado()))
+        if largo_id_actual > largo_id:
+            largo_id = largo_id_actual
+        if largo_nombre_actual > largo_nombre:
+            largo_nombre = largo_nombre_actual
+        if largo_usuario_actual > largo_usuario:
+            largo_usuario = largo_usuario_actual
+        if largo_contrasena_actual > largo_contrasena:
+            largo_contrasena = largo_contrasena_actual
+        if largo_balance_actual > largo_balance:
+            largo_balance = largo_balance_actual
+        if largo_estado_actual > largo_estado:
+            largo_estado = largo_estado_actual            
+    print('ID','-'*(largo_id+2),'NOMBRE','-'*(largo_nombre),'USUARIO','-'*(largo_usuario),'CONTRASENA','-'*(largo_contrasena),'BALANCE','-'*(largo_balance),'ESTADO')
+    for x in clientes:
+        id_cliente = x.getid()
+        nombre = x.getnombre()
+        usuario = x.getusuario()
+        contrasena = '*'*len((x.getcontrasena()))
+        balance = x.getbalance()
+        estado = x.getestado()
+        print(id_cliente,' '*(largo_id+4-len(str(id_cliente))),nombre,' '*(largo_nombre+6-len(nombre)), usuario,' '*(largo_usuario+7-len(usuario)),contrasena,' '*(largo_contrasena+10-len(contrasena)),balance,' '*(largo_balance+7-len(str(balance))),estado)
             
+def ver_movimientos():
+    print('HA SELECCIONADO LA OPCION PARA CONSULTAR MOVIMIENTOS')
+    if tipo_sesion == 1:
+        listar_clientes()
+        codigo_cliente = int(input('\nDE CUAL CLIENTE DESEA CONSULTAR LOS MOVIMIENTOS?  '))
+    else: 
+        codigo_cliente = codigo_usuario
+    for cliente in clientes:
+        if cliente.getid() == codigo_cliente:
+            cliente_encontrado = True
+            if len(cliente.getmovimientos()) < 1:
+                print('ESTE CLIENTE NO TIENE MOVIMIENTOS')
+            else:
+                movimientos_cliente = cliente.getmovimientos()
+                for movimiento in movimientos_cliente:
+                    id_movimiento = movimiento['numero']
+                    print(id_movimiento)
+        
+
 def imprimir_menu():
     os.system('cls')
     proceso = 0
@@ -300,6 +355,7 @@ def imprimir_menu():
                     registrar_clientes()
                 elif proceso == 2:
                     print('')
+                    listar_clientes()
                 elif proceso == 3:
                     print('')
                 elif proceso == 4:    
@@ -328,6 +384,7 @@ def imprimir_menu():
                     abonar_cuenta()
                 elif proceso == 4:    
                     print('')
+                    ver_movimientos()
                 else:
                     print('PROCESO INVALIDO, INTENTE NUEVAMENTE ')
             desicion = input('DESEA CONTINUAR? S/N  ')
