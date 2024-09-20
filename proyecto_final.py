@@ -320,6 +320,7 @@ def listar_clientes():
         print(id_cliente,' '*(largo_id+4-len(str(id_cliente))),nombre,' '*(largo_nombre+6-len(nombre)), usuario,' '*(largo_usuario+7-len(usuario)),contrasena,' '*(largo_contrasena+10-len(contrasena)),balance,' '*(largo_balance+7-len(str(balance))),estado)
             
 def ver_movimientos():
+    cliente_encontrado = False
     print('HA SELECCIONADO LA OPCION PARA CONSULTAR MOVIMIENTOS')
     if tipo_sesion == 1:
         listar_clientes()
@@ -332,10 +333,39 @@ def ver_movimientos():
             if len(cliente.getmovimientos()) < 1:
                 print('ESTE CLIENTE NO TIENE MOVIMIENTOS')
             else:
-                movimientos_cliente = cliente.getmovimientos()
-                for movimiento in movimientos_cliente:
-                    id_movimiento = movimiento['numero']
-                    print(id_movimiento)
+                print('---MOVIMIENTOS DE LA CUENTA A NOMBRE DE : ',cliente.getnombre(),'---\n')
+                largo_id = 1 
+                largo_nombre = 1
+                largo_monto = 1
+                largo_beneficiario = 1
+                for x in cliente.getmovimientos():
+                    largo_id_actual = len(str(x['numero']))
+                    largo_nombre_actual = len(cliente.getnombre())
+                    largo_monto_actual = len(str(x['monto']))
+                    id_beneficiario = x['beneficiario']
+                    for beneficiario in clientes:
+                        if beneficiario.getid() == id_beneficiario:
+                            largo_beneficiario_actual = len(beneficiario.getnombre())
+                    if largo_id_actual > largo_id:
+                        largo_id = largo_id_actual
+                    if largo_nombre_actual > largo_nombre:
+                        largo_nombre = largo_nombre_actual
+                    if largo_monto_actual > largo_monto:
+                        largo_monto = largo_monto_actual
+                    if largo_beneficiario_actual > largo_beneficiario:
+                        largo_beneficiario = largo_beneficiario_actual
+                print('NUM MOVIMIENTO','-'*(largo_id+2),'REMITENTE','-'*(largo_nombre),'MONTO','-'*(largo_monto),'BENEFICIARIO')
+                nombre = cliente.getnombre()
+                for x in cliente.getmovimientos():
+                    id_movimiento = x['numero']
+                    monto = x['monto']
+                    id_beneficiario = x['beneficiario']
+                    for beneficiario in clientes:
+                        if beneficiario.getid() == id_beneficiario:
+                            beneficiario_nombre = beneficiario.getnombre()
+                    print(id_movimiento,' '*(largo_id+14-len(str(id_movimiento))),nombre,' '*(largo_nombre+9-len(nombre)), monto,' '*(largo_monto+5-len(str(monto))),beneficiario_nombre,' '*(largo_beneficiario+12-len(beneficiario_nombre)))
+    if cliente_encontrado == False:
+        print('EL CLIENTE NO PUDO SER ENCONTRADO')
         
 
 def imprimir_menu():
