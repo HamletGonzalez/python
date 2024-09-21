@@ -281,6 +281,8 @@ def cambiar_estatus():
                     if contrasena.upper() == empleado.getcontrasena():
                         cliente.setestado(estado_cambio)
                         print('EL ESTADO DE LA CUENTA FUE CAMBIADO CON EXITO')
+                    else: 
+                        print('CONTRASENA INCORRECTA, EL ESTADO DE LA CUENTA NO HA CAMBIADO')
 
 def listar_clientes():
     print('---LISTADO DE CLIENTES---')

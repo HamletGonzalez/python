@@ -4,7 +4,7 @@
         "nombre": "JUAN",
         "usuario": "JUAN",
         "contrasena": "123456",
-        "balance": 10000,
+        "balance": 10500,
         "estado": "A",
         "movimientos": [
             {
@@ -23,5 +23,30 @@
         "balance": 26000,
         "estado": "I",
         "movimientos": []
+    },
+    {
+        "id": 3,
+        "nombre": "JOSE MANUEL PEREZ",
+        "usuario": "JOSEMA",
+        "contrasena": "654321",
+        "balance": 2500,
+        "estado": "A",
+        "movimientos": []
+    },
+    {
+        "id": 4,
+        "nombre": "JOSE MANUEL PERZ",
+        "usuario": "JOSEMA",
+        "contrasena": "654321",
+        "balance": 3000,
+        "estado": "I",
+        "movimientos": [
+            {
+                "numero": 2,
+                "usuario": 4,
+                "monto": 500,
+                "beneficiario": 1
+            }
+        ]
     }
 ]
